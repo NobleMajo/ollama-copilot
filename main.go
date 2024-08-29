@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 
 	"github.com/bernardo-bruning/ollama-copilot/internal"
 )
@@ -18,8 +19,13 @@ var (
 	templateStr  = flag.String("template", "<PRE> {{.Prefix}} <SUF> {{.Suffix}} <MID>", "Fill-in-middle template to apply in prompt")
 )
 
+var Version string = "?.?.?"
+var Commit string = "???????"
+
 // main is the entrypoint for the program.
 func main() {
+	fmt.Println("Start ollama-copilot version " + Version + ", build " + Commit + "...")
+
 	flag.Parse()
 	server := &internal.Server{
 		PortSSL:     *portSSL,

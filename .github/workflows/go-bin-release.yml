@@ -1,0 +1,34 @@
+name: Go binary release
+
+on:
+  release:
+    types: [created, edited]
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  releases-matrix:
+    name: Release Go Binary
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        goos: ["linux", "darwin", "windows"]
+        goarch: ["amd64", "386", "arm64"]
+        exclude:
+          - goarch: "386"
+            goos: "darwin"
+          - goarch: "arm64"
+            goos: "windows"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: wangyoucao577/go-release-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          goos: ${{ matrix.goos }}
+          goarch: ${{ matrix.goarch }}
+          goversion: "1.23"
+          binary_name: "ollama-copilot"
+          extra_files: LICENSE README.md
+          ldflags: "-X main.Version=${{ github.ref_name }} -X main.Commit=${{ github.sha }}"

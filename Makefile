@@ -1,14 +1,16 @@
-BINARY_NAME=ollama-copilot
+BINARY_NAME := ollama-copilot
+VERSION := $(shell cat version.txt)
+COMMIT := $(shell git rev-parse --short HEAD)
 
 build:
-	GOARCH=amd64 GOOS=linux go build -o $(BINARY_NAME)-linux cmd/main.go
+	go build -o $(BINARY_NAME) -ldflags='-X main.Version=$(VERSION) -X main.Commit=$(COMMIT)' main.go
 
 run:
-	go run cmd/main.go
+	go run main.go
 
 clean:
 	go clean
-	rm -rf $(BINARY_NAME)-linux
+	rm -rf $(BINARY_NAME)
 
 dep:
 	go mod download

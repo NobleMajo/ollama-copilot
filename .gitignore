@@ -21,4 +21,4 @@ go.work.sum
 # env file
 .env
 
-ollama-copilot-linux
+ollama-copilot
